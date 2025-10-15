@@ -538,7 +538,7 @@ export class TpuConnection extends Connection {
         if (status.err) {
             throw new Error(`Transaction ${signature} failed (${JSON.stringify(status)})`);
         } else {
-            console.log(`Transaction Confirmed https://solana.fm/tx/${signature}`);
+            console.log(`Transaction Confirmed https://solscan.io/tx/${signature}`);
         }
         return signature;
     }
@@ -557,7 +557,7 @@ export class TpuConnection extends Connection {
         if (status.err) {
             throw new Error(`Transaction ${signature} failed (${JSON.stringify(status)})`);
         } else {
-            console.log(`Transaction Confirmed https://solana.fm/tx/${signature}`);
+            console.log(`Transaction Confirmed https://solscan.io/tx/${signature}`);
         }
         return signature;
     }
@@ -571,7 +571,7 @@ export class TpuConnection extends Connection {
      */
     async sendAndConfirmAbortableTransaction(transaction: Transaction | VersionedTransaction, signers: Array<Signer> | SendOptions, sendOptions?: SendOptions) : Promise<TransactionSignature>  {
         const { signature, abortControllers, blockhash } = await this.tpuClient.sendAbortableTransaction(transaction, signers, sendOptions);
-        console.log(`sent tx: https://solana.fm/tx/${signature}`);
+        console.log(`sent tx: https://solscan.io/tx/${signature}`);
         try {
             if (!('version' in transaction)) {
                 let status: SignatureResult;
@@ -587,7 +587,7 @@ export class TpuConnection extends Connection {
                     status = (await this.confirmTransaction(signature, 'processed')).value;
                 }
                 if (status.err === null) {
-                    console.log(`Transaction Processed https://solana.fm/tx/${signature}`);
+                    console.log(`Transaction Processed https://solscan.io/tx/${signature}`);
                     abortControllers.forEach(controller => controller.abort());
                     return signature;
                 } else {
@@ -616,7 +616,7 @@ export class TpuConnection extends Connection {
             status = (await this.confirmTransaction(signature, 'processed')).value;
         }
         if (status.err === null) {
-            console.log(`Transaction Processed https://solana.fm/tx/${signature}`);
+            console.log(`Transaction Processed https://solscan.io/tx/${signature}`);
             abortControllers.forEach(controller => controller.abort());
             return signature;
         } else {

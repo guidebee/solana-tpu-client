@@ -1,6 +1,11 @@
 
-import { Transaction, Keypair, SystemProgram, ComputeBudgetProgram} from '@solana/web3.js';
-import { TpuConnection} from '../src/index';
+import {
+	Transaction,
+	Keypair,
+	SystemProgram,
+	ComputeBudgetProgram,
+} from '@solana/web3.js';
+import { TpuConnection} from '../src';
 import { config } from 'dotenv';
 import base58 from 'bs58';
 
@@ -11,9 +16,9 @@ const signer = Keypair.fromSecretKey(base58.decode(process.env.KEYPAIR!));
 
 (async () => {
     const start = process.hrtime();
-    const tpuConnection = await TpuConnection.load(rpcurl, { commitment: 'processed' });
+    const tpuConnection = await TpuConnection.load(rpcurl, { commitment: 'confirmed' });
     const tx = new Transaction();
-    const instruction = SystemProgram.transfer({ fromPubkey: signer.publicKey, toPubkey: signer.publicKey, lamports: 1 });
+    const instruction = SystemProgram.transfer({ fromPubkey: signer.publicKey, toPubkey: signer.publicKey, lamports: 1000 });
     tx.add(ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 1000 }));
     tx.add(ComputeBudgetProgram.setComputeUnitLimit({ units: 10_000 }));
     tx.add(instruction);
